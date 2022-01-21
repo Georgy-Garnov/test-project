@@ -1,0 +1,43 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+max_line_length = 120
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{php,inc,module}]
+ij_php_align_phpdoc_comments = true
+ij_php_align_phpdoc_param_names = true
+ij_php_else_if_style = combine
+ij_php_upper_case_boolean_const = true
+ij_php_upper_case_null_const = true
+ij_php_comma_after_last_array_element = true
+ij_php_method_brace_style = end_of_line
+ij_php_class_brace_style = end_of_line
+ij_php_lambda_brace_style = end_of_line
+ij_php_anonymous_brace_style = end_of_line
+ij_php_if_brace_force = always
+ij_php_blank_lines_after_class_header = 1
+ij_php_blank_lines_before_class_end = 0
+ij_php_blank_lines_around_field = 0
+ij_php_else_on_new_line = false
+ij_php_catch_on_new_line = false
+ij_php_space_after_type_cast = true
+
+ij_any_else_on_new_line = false
+ij_any_catch_on_new_line = false
+
+[*.{yml,yaml}]
+indent_size = 4
+
+[*.{sql,sql.php}]
+indent_size = 2
+
+[*.js]
+indent_size = 2
+ij_javascript_use_semicolon_after_statement = false
+ij_javascript_force_semicolon_style = false
