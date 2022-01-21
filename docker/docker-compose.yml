@@ -16,6 +16,7 @@ services:
     volumes:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./database/data:/var/lib/mysql:cached
+      - ./database/my.cnf:/etc/mysql/my.cnf
       - ./logs/mysql:/var/log/mysql
   app:
     build:
