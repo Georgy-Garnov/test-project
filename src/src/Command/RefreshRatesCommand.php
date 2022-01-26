@@ -2,12 +2,14 @@
 
 namespace App\Command;
 
+use App\Common\DBConnection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Common\Currency;
 
 class RefreshRatesCommand extends Command {
   protected static $defaultName = 'app:refresh-rates';
@@ -18,6 +20,7 @@ class RefreshRatesCommand extends Command {
   private $rateKey;
 
   public function __construct(Connection $connection, HttpClientInterface $client) {
+    DBConnection::setConnection($connection);
     $this->connection = $connection;
     $this->httpClient = $client;
     parent::__construct();
@@ -43,6 +46,10 @@ class RefreshRatesCommand extends Command {
    */
   protected function execute(InputInterface $input, OutputInterface $output): int
   {
+    $currency = new Currency();
+    $currency->currency_id = 'RUB';
+    $output->writeln(var_export($currency, TRUE));
+    return Command::SUCCESS;
     try {
       $pairs = $this->getRatePairs();
       $url = $this->formatRequestUrl($pairs);
