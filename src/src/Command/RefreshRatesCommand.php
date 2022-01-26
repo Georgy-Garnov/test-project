@@ -7,17 +7,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RefreshRatesCommand extends Command {
   protected static $defaultName = 'app:refresh-rates';
   /** @var Connection */
   private $connection;
   /** @var ContainerInterface */
-  private $container;
+  private $httpClient;
   private $rateKey;
 
-  public function __construct(Connection $connection, ContainerInterface $container) {
+  public function __construct(Connection $connection, HttpClientInterface $client) {
     $this->connection = $connection;
+    $this->httpClient = $client;
     parent::__construct();
   }
 
@@ -57,6 +59,28 @@ class RefreshRatesCommand extends Command {
     //return Command::INVALID;
   }
 
+  public function fetchGitHubInformation(): array
+  {
+    $response = $this->httpClient->request(
+      'GET',
+      'https://api.github.com/repos/symfony/symfony-docs'
+    );
+
+    $statusCode = $response->getStatusCode();
+    var_export($statusCode);
+    // $statusCode = 200
+    $contentType = $response->getHeaders()['content-type'][0];
+    var_export($contentType);
+    // $contentType = 'application/json'
+    $content = $response->getContent();
+    var_export($content);
+    // $content = '{"id":521583, "name":"symfony-docs", ...}'
+    $content = $response->toArray();
+    var_export($content);
+    // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
+
+    return $content;
+  }
   private function getExchangeRates(array $pairs): array {
 
   }
