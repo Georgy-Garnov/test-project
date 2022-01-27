@@ -8,16 +8,14 @@ use App\Common\ETransactionType;
 use App\Common\User;
 use App\Common\Wallet;
 use Exception;
-use JsonException;
 use LogicException;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\DBAL\Connection;
 use App\Common\DBConnection;
 
 
-class TestController extends AbstractController {
+class TestController extends AbstractJsonController {
 
   public function __construct(Connection $connection) {
     DBConnection::setConnection($connection);
@@ -87,22 +85,6 @@ class TestController extends AbstractController {
       ];
     }
     return $this->response($data);
-  }
-
-  public function response($data, $status = 200, $headers = []): JsonResponse {
-    return new JsonResponse($data, $status, $headers);
-  }
-
-  /**
-   * @throws JsonException
-   */
-  protected function transformJsonBody(Request $request): Request {
-    $data = json_decode($request->getContent(), TRUE, 512, JSON_THROW_ON_ERROR);
-    if ($data === NULL) {
-      return $request;
-    }
-    $request->request->replace($data);
-    return $request;
   }
 
 }
